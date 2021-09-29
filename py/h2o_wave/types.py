@@ -7429,6 +7429,102 @@ class MarkupCard:
         )
 
 
+_NotificationBarType = ['info', 'error', 'warning', 'success', 'danger', 'blocked']
+
+
+class NotificationBarType:
+    INFO = 'info'
+    ERROR = 'error'
+    WARNING = 'warning'
+    SUCCESS = 'success'
+    DANGER = 'danger'
+    BLOCKED = 'blocked'
+
+
+_NotificationBarPosition = ['top-right', 'bottom-right', 'bottom-center', 'bottom-left', 'top-left', 'top-center']
+
+
+class NotificationBarPosition:
+    TOP_RIGHT = 'top-right'
+    BOTTOM_RIGHT = 'bottom-right'
+    BOTTOM_CENTER = 'bottom-center'
+    BOTTOM_LEFT = 'bottom-left'
+    TOP_LEFT = 'top-left'
+    TOP_CENTER = 'top-center'
+
+
+class NotificationBar:
+    """Create a notification bar.
+
+    A notification bar is an area at the edge of a primary view that displays relevant status information.
+    You can use a notification bar to tell the user about a result of an action, e.g. "Data has been successfully saved".
+    """
+    def __init__(
+            self,
+            text: str,
+            type: Optional[str] = None,
+            timeout: Optional[int] = None,
+            buttons: Optional[List[Component]] = None,
+            position: Optional[str] = None,
+    ):
+        _guard_scalar('NotificationBar.text', text, (str,), False, False, False)
+        _guard_enum('NotificationBar.type', type, _NotificationBarType, True)
+        _guard_scalar('NotificationBar.timeout', timeout, (int,), False, True, False)
+        _guard_vector('NotificationBar.buttons', buttons, (Component,), False, True, False)
+        _guard_enum('NotificationBar.position', position, _NotificationBarPosition, True)
+        self.text = text
+        """The text displayed on the notification bar."""
+        self.type = type
+        """The icon and color of the notification bar. Defaults to 'info'. One of 'info', 'error', 'warning', 'success', 'danger', 'blocked'. See enum h2o_wave.ui.NotificationBarType."""
+        self.timeout = timeout
+        """When should the notification bar disappear in seconds. Defaults to 5."""
+        self.buttons = buttons
+        """Specify one or more action buttons."""
+        self.position = position
+        """Specify the location of notification. Defaults to 'top-right'. One of 'top-right', 'bottom-right', 'bottom-center', 'bottom-left', 'top-left', 'top-center'. See enum h2o_wave.ui.NotificationBarPosition."""
+
+    def dump(self) -> Dict:
+        """Returns the contents of this object as a dict."""
+        _guard_scalar('NotificationBar.text', self.text, (str,), False, False, False)
+        _guard_enum('NotificationBar.type', self.type, _NotificationBarType, True)
+        _guard_scalar('NotificationBar.timeout', self.timeout, (int,), False, True, False)
+        _guard_vector('NotificationBar.buttons', self.buttons, (Component,), False, True, False)
+        _guard_enum('NotificationBar.position', self.position, _NotificationBarPosition, True)
+        return _dump(
+            text=self.text,
+            type=self.type,
+            timeout=self.timeout,
+            buttons=None if self.buttons is None else [__e.dump() for __e in self.buttons],
+            position=self.position,
+        )
+
+    @staticmethod
+    def load(__d: Dict) -> 'NotificationBar':
+        """Creates an instance of this class using the contents of a dict."""
+        __d_text: Any = __d.get('text')
+        _guard_scalar('NotificationBar.text', __d_text, (str,), False, False, False)
+        __d_type: Any = __d.get('type')
+        _guard_enum('NotificationBar.type', __d_type, _NotificationBarType, True)
+        __d_timeout: Any = __d.get('timeout')
+        _guard_scalar('NotificationBar.timeout', __d_timeout, (int,), False, True, False)
+        __d_buttons: Any = __d.get('buttons')
+        _guard_vector('NotificationBar.buttons', __d_buttons, (dict,), False, True, False)
+        __d_position: Any = __d.get('position')
+        _guard_enum('NotificationBar.position', __d_position, _NotificationBarPosition, True)
+        text: str = __d_text
+        type: Optional[str] = __d_type
+        timeout: Optional[int] = __d_timeout
+        buttons: Optional[List[Component]] = None if __d_buttons is None else [Component.load(__e) for __e in __d_buttons]
+        position: Optional[str] = __d_position
+        return NotificationBar(
+            text,
+            type,
+            timeout,
+            buttons,
+            position,
+        )
+
+
 _ZoneDirection = ['row', 'column']
 
 
@@ -8174,6 +8270,7 @@ class MetaCard:
             title: Optional[str] = None,
             refresh: Optional[int] = None,
             notification: Optional[str] = None,
+            notification_bar: Optional[NotificationBar] = None,
             redirect: Optional[str] = None,
             icon: Optional[str] = None,
             layouts: Optional[List[Layout]] = None,
@@ -8192,6 +8289,7 @@ class MetaCard:
         _guard_scalar('MetaCard.title', title, (str,), False, True, False)
         _guard_scalar('MetaCard.refresh', refresh, (int,), False, True, False)
         _guard_scalar('MetaCard.notification', notification, (str,), False, True, False)
+        _guard_scalar('MetaCard.notification_bar', notification_bar, (NotificationBar,), False, True, False)
         _guard_scalar('MetaCard.redirect', redirect, (str,), False, True, False)
         _guard_scalar('MetaCard.icon', icon, (str,), False, True, False)
         _guard_vector('MetaCard.layouts', layouts, (Layout,), False, True, False)
@@ -8213,6 +8311,8 @@ class MetaCard:
         """Refresh rate in seconds. A value of 0 turns off live-updates. Values != 0 are currently ignored (reserved for future use)."""
         self.notification = notification
         """Display a desktop notification."""
+        self.notification_bar = notification_bar
+        """Display an in-app notification bar."""
         self.redirect = redirect
         """Redirect the page to a new URL."""
         self.icon = icon
@@ -8246,6 +8346,7 @@ class MetaCard:
         _guard_scalar('MetaCard.title', self.title, (str,), False, True, False)
         _guard_scalar('MetaCard.refresh', self.refresh, (int,), False, True, False)
         _guard_scalar('MetaCard.notification', self.notification, (str,), False, True, False)
+        _guard_scalar('MetaCard.notification_bar', self.notification_bar, (NotificationBar,), False, True, False)
         _guard_scalar('MetaCard.redirect', self.redirect, (str,), False, True, False)
         _guard_scalar('MetaCard.icon', self.icon, (str,), False, True, False)
         _guard_vector('MetaCard.layouts', self.layouts, (Layout,), False, True, False)
@@ -8265,6 +8366,7 @@ class MetaCard:
             title=self.title,
             refresh=self.refresh,
             notification=self.notification,
+            notification_bar=None if self.notification_bar is None else self.notification_bar.dump(),
             redirect=self.redirect,
             icon=self.icon,
             layouts=None if self.layouts is None else [__e.dump() for __e in self.layouts],
@@ -8291,6 +8393,8 @@ class MetaCard:
         _guard_scalar('MetaCard.refresh', __d_refresh, (int,), False, True, False)
         __d_notification: Any = __d.get('notification')
         _guard_scalar('MetaCard.notification', __d_notification, (str,), False, True, False)
+        __d_notification_bar: Any = __d.get('notification_bar')
+        _guard_scalar('MetaCard.notification_bar', __d_notification_bar, (dict,), False, True, False)
         __d_redirect: Any = __d.get('redirect')
         _guard_scalar('MetaCard.redirect', __d_redirect, (str,), False, True, False)
         __d_icon: Any = __d.get('icon')
@@ -8321,6 +8425,7 @@ class MetaCard:
         title: Optional[str] = __d_title
         refresh: Optional[int] = __d_refresh
         notification: Optional[str] = __d_notification
+        notification_bar: Optional[NotificationBar] = None if __d_notification_bar is None else NotificationBar.load(__d_notification_bar)
         redirect: Optional[str] = __d_redirect
         icon: Optional[str] = __d_icon
         layouts: Optional[List[Layout]] = None if __d_layouts is None else [Layout.load(__e) for __e in __d_layouts]
@@ -8339,6 +8444,7 @@ class MetaCard:
             title,
             refresh,
             notification,
+            notification_bar,
             redirect,
             icon,
             layouts,

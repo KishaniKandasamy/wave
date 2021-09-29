@@ -15,6 +15,7 @@
 import { box, disconnect, Id, Model, on, S, U } from 'h2o-wave'
 import React from 'react'
 import { Dialog, dialogB } from './dialog'
+import { NotificationBar, notificationBarB } from './notification_bar'
 import { cards } from './layout'
 import { showNotification } from './notification'
 import { executeScript, InlineScript, installScripts, Script } from './script'
@@ -132,6 +133,8 @@ interface State {
   refresh?: U
   /** Display a desktop notification. */
   notification?: S
+  /** Display an in-app notification bar. */
+  notification_bar?: NotificationBar
   /** Redirect the page to a new URL. */
   redirect?: S
   /** 
@@ -182,6 +185,7 @@ export const
       title,
       icon,
       refresh,
+      notification_bar,
       notification,
       redirect,
       layouts,
@@ -214,6 +218,8 @@ export const
 
     dialogB(dialog ? { ...dialog } : null)
     sidePanelB(side_panel ? { ...side_panel } : null)
+    // HACK: Since meta cards are processed within render, wait for React to finish the original render before proceeding.
+    setTimeout(() => notificationBarB(notification_bar ? { ...notification_bar } : null), 0)
 
     if (title) windowTitleB(title)
     if (icon) windowIconB(icon)

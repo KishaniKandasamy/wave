@@ -47,17 +47,17 @@ const
         '.wave-markdown > *:only-child': { marginBottom: 0 },
       }
     }
-  }),
-  toMessageBarType = (t?: S): Fluent.MessageBarType => {
-    switch (t) {
-      case 'error': return Fluent.MessageBarType.error
-      case 'warning': return Fluent.MessageBarType.warning
-      case 'success': return Fluent.MessageBarType.success
-      case 'danger': return Fluent.MessageBarType.severeWarning
-      case 'blocked': return Fluent.MessageBarType.blocked
-      default: return Fluent.MessageBarType.info
-    }
+  })
+export const toMessageBarType = (t?: S): Fluent.MessageBarType => {
+  switch (t) {
+    case 'error': return Fluent.MessageBarType.error
+    case 'warning': return Fluent.MessageBarType.warning
+    case 'success': return Fluent.MessageBarType.success
+    case 'danger': return Fluent.MessageBarType.severeWarning
+    case 'blocked': return Fluent.MessageBarType.blocked
+    default: return Fluent.MessageBarType.info
   }
+}
 
 export const
   XMessageBar = ({ model: m }: { model: MessageBar }) => (

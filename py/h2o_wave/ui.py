@@ -2626,6 +2626,36 @@ def markup_card(
     )
 
 
+def notification_bar(
+        text: str,
+        type: Optional[str] = None,
+        timeout: Optional[int] = None,
+        buttons: Optional[List[Component]] = None,
+        position: Optional[str] = None,
+) -> NotificationBar:
+    """Create a notification bar.
+
+    A notification bar is an area at the edge of a primary view that displays relevant status information.
+    You can use a notification bar to tell the user about a result of an action, e.g. "Data has been successfully saved".
+
+    Args:
+        text: The text displayed on the notification bar.
+        type: The icon and color of the notification bar. Defaults to 'info'. One of 'info', 'error', 'warning', 'success', 'danger', 'blocked'. See enum h2o_wave.ui.NotificationBarType.
+        timeout: When should the notification bar disappear in seconds. Defaults to 5.
+        buttons: Specify one or more action buttons.
+        position: Specify the location of notification. Defaults to 'top-right'. One of 'top-right', 'bottom-right', 'bottom-center', 'bottom-left', 'top-left', 'top-center'. See enum h2o_wave.ui.NotificationBarPosition.
+    Returns:
+        A `h2o_wave.types.NotificationBar` instance.
+    """
+    return NotificationBar(
+        text,
+        type,
+        timeout,
+        buttons,
+        position,
+    )
+
+
 def zone(
         name: str,
         size: Optional[str] = None,
@@ -2902,6 +2932,7 @@ def meta_card(
         title: Optional[str] = None,
         refresh: Optional[int] = None,
         notification: Optional[str] = None,
+        notification_bar: Optional[NotificationBar] = None,
         redirect: Optional[str] = None,
         icon: Optional[str] = None,
         layouts: Optional[List[Layout]] = None,
@@ -2926,6 +2957,7 @@ def meta_card(
         title: The title of the page.
         refresh: Refresh rate in seconds. A value of 0 turns off live-updates. Values != 0 are currently ignored (reserved for future use).
         notification: Display a desktop notification.
+        notification_bar: Display an in-app notification bar.
         redirect: Redirect the page to a new URL.
         icon: Shortcut icon path. Preferably a `.png` file (`.ico` files may not work in mobile browsers). Not supported in Safari.
         layouts: The layouts supported by this page.
@@ -2947,6 +2979,7 @@ def meta_card(
         title,
         refresh,
         notification,
+        notification_bar,
         redirect,
         icon,
         layouts,
