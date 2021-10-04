@@ -177,7 +177,7 @@ const
       alignItems: 'center',
       $nest: {
         '> [data-visible="true"] ~ div': {
-          marginLeft: 25
+          marginLeft: 8
         }
       }
     },
