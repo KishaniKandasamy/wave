@@ -50,5 +50,6 @@ import './vega'
 import './wide_bar_stat'
 import './wide_gauge_stat'
 import './wide_info'
+import './wide_pie_stat'
 import './wide_series_stat'
 
